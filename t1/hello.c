@@ -4,7 +4,7 @@
 MODULE_LICENSE("GPL");
 
 static char *who = "who";
-module_param(who, charp, 0)
+module_param(who, charp, 0);
 
 static int hello_init(void)
 {
