@@ -6,15 +6,14 @@
 #include <linux/types.h>
 #include <linux/fs.h>
 #include <linux/proc_fs.h>
-#include <asm/uaccess.h>
+#include <linux/uaccess.h>
 
 #define MAJOR_NUMBER 61
 
 /* forward declaration */
 int onebyte_open(struct inode *inode, struct file *filep);
 int onebyte_release(struct inode *inode, struct file *filep);
-ssize_t onebyte_read(struct file *filep, char *buf, size_t
-count, loff_t *f_pos);
+ssize_t onebyte_read(struct file *filep, char *buf, size_t count, loff_t *f_pos);
 ssize_t onebyte_write(struct file *filep, const char *buf, size_t count, loff_t *f_pos);
 static void onebyte_exit(void);
 
@@ -39,11 +38,20 @@ return 0; // always successful
 ssize_t onebyte_read(struct file *filep, char *buf, size_t count, loff_t *f_pos)
 {
 /*please complete the function on your own*/
+    int error_count = 0;
+    error_count = copy_to_user(onebyte_data, buf, count);
+    if (error_count != 0){
+        printk(KERN_ERR "No space left on device\n");
+        return -EFAULT;
+    }
+    return 1;
 }
 
 ssize_t onebyte_write(struct file *filep, const char *buf, size_t count, loff_t *f_pos)
 {
 /*please complete the function on your own*/
+    sprintf(onebyte_data, buf);
+    return count;
 }
 
 static int onebyte_init(void)
