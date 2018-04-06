@@ -38,14 +38,14 @@ return 0; // always successful
 ssize_t onebyte_read(struct file *filep, char *buf, size_t count, loff_t *f_pos)
 {
 /*please complete the function on your own*/
-    copy_to_user(onebyte_data, buf, count);
+    copy_to_user(onebyte_data, buf, 1);
     return 1;
 }
 
 ssize_t onebyte_write(struct file *filep, const char *buf, size_t count, loff_t *f_pos)
 {
 /*please complete the function on your own*/
-    *onebyte_data = *buf;
+    sprintf(onebyte_data, "%s", buf);
     if (count > 1){
         printk(KERN_ERR "No space left on device\n");
         return -EFAULT;
